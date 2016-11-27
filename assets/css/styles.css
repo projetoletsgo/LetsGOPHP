@@ -1,7 +1,7 @@
 * {
 	margin: 0;
 	padding: 0;
-	text-decoration: none;s
+	text-decoration: none;
 }
 html {
     position: relative;
@@ -10,8 +10,14 @@ html {
 body {
     margin: 0 0 50px; /* bottom = footer height */
 }
-
-
+h1 {
+    font-size: 32px;
+    text-align: left;
+    margin-left: 15px;
+}
+.clear {
+	clear: both;
+}
 
 @media (min-width:992px) {
     #aside {
@@ -73,7 +79,11 @@ footer {
 /********** MENU **********/
 .sidenav-logo {
 	width: 100%;
-
+    min-height: 100px;
+	margin-bottom: 20px;
+}
+.sidenav-logo:hover {
+	background-color: transparent!important;
 }
 .sidenav-logo img {
 	height: 100px;
