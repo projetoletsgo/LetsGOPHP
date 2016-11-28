@@ -4,7 +4,9 @@ include ('../connection.php');
 $funcoes = ['logar','cadastrarUsuario'];
 if(in_array($_POST['tipo'], $funcoes)){
 	echo $_POST['tipo']();
-}else{
+}
+else
+{
 	echo 'Tipo nao encontrado!';
 	dbd($_REQUEST);
 }
@@ -12,52 +14,62 @@ if(in_array($_POST['tipo'], $funcoes)){
 
 
 function logar(){
+
 	global $conn;
-	if($_POST['s_email'] && $_POST['s_senha']){
-		$senha = $_POST['s_senha'];
-		$email = $_POST['s_email'];
-		$sql = "SELECT * FROM TB_USUARIO WHERE S_EMAIL = '$email' AND S_SENHA = '$senha'";
-		$result = $conn->query($sql);
-		$user = mysqli_fetch_assoc($result);
-		$co_user = $user['CO_SEQ_USUARIO'];
-		$user['excursoes_minhas'] = listarExcursoesMinhas($co_user);
-		$user['excursoes_novas'] = listarExcursoesNovas($co_user);
-		$user['excursoes_participando'] = listarExcursoesParticipando($co_user);
-		$user['chats'] = listarChats($co_user);
-		dbd($user);
-		return json_encode($user);
-	}else{
-		echo "Dados invalidos";
-                	dbd($_REQUEST);
+	session_start();
+   
+	if($_SERVER["REQUEST_METHOD"] == "POST") {
+		// username and password sent from form 
 
-	}
+		$email = mysqli_real_escape_string($conn,$_POST['s_email']);
+		$senha = mysqli_real_escape_string($conn,$_POST['s_senha']); 
+
+		$sql = "SELECT CO_SEQ_USUARIO FROM TB_USUARIO WHERE S_EMAIL = '$email' AND S_SENHA = '$senha'";
+		$result = mysqli_query($conn,$sql);
+		$row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+		$active = $row['CO_SEQ_USUARIO'];
+
+		$count = mysqli_num_rows($result);
+
+		// If result matched $myusername and $mypassword, table row must be 1 row
+
+		if($count == 1) {
+			session_register("email");
+			$_SESSION['login_user'] = $email;
+			header("location: minhasViagens.php");
+		}else {
+			$error = "Your Login Name or Password is invalid";
+		}
+   }
+
 }
+
 function cadastrarUsuario(){
- global $conn;
- if($_POST['s_cidade'] && $_POST['s_estado'] && $_POST['s_nome'] && $_POST['s_sobrenome'] && $_POST['s_email'] &&
-  $_POST['s_senha'] && $_POST['dt_nascimento'] && $_POST['s_rg'] && $_POST['s_cpf']){
+	global $conn;
+	if($_POST['s_cidade'] && $_POST['s_estado'] && $_POST['s_nome'] && $_POST['s_sobrenome'] && $_POST['s_email'] &&
+	$_POST['s_senha'] && $_POST['dt_nascimento'] && $_POST['s_rg'] && $_POST['s_cpf'])
+	{
+		$cidade = $_POST['s_cidade'];
+		$estado = $_POST['s_estado'];
+		$nome = $_POST['s_nome'];
+		$sobrenome = $_POST['s_sobrenome'];
+		$email = $_POST['s_email'];
+		$senha = $_POST['s_senha'];
+		$dtNasc = $_POST['dt_nascimento'];
+		$rg = $_POST['s_rg'];
+		$cpf = $_POST['s_cpf'];
 
-  $cidade = $_POST['s_cidade'];
-  $estado = $_POST['s_estado'];
-  $nome = $_POST['s_nome'];
-  $sobrenome = $_POST['s_sobrenome'];
-  $email = $_POST['s_email'];
-  $senha = $_POST['s_senha'];
-  $dtNasc = $_POST['dt_nascimento'];
-  $rg = $_POST['s_rg'];
-  $cpf = $_POST['s_cpf'];
+		$sql = "INSERT INTO TB_CIDADE(S_ESTADO, S_NOME) VALUES ('$estado','$cidade')";
+		$conn->query($sql);
+		$co_cidade = $conn->insert_id;
+		$sql = "INSERT INTO TB_USUARIO (CO_CIDADE, S_NOME, S_SOBRENOME, S_EMAIL, S_SENHA, DT_NASCIMENTO, S_RG, S_CPF)".
+		"VALUES ($co_cidade, '$nome', '$sobrenome', '$email', '$senha', '$dtNasc', '$rg', '$cpf')";
 
-  $sql = "INSERT INTO TB_CIDADE(S_ESTADO, S_NOME) VALUES ('$estado','$cidade')";
-  $conn->query($sql);
-  $co_cidade = $conn->insert_id;
-  $sql = "INSERT INTO TB_USUARIO (CO_CIDADE, S_NOME, S_SOBRENOME, S_EMAIL, S_SENHA, DT_NASCIMENTO, S_RG, S_CPF)".
-   "VALUES ($co_cidade, '$nome', '$sobrenome', '$email', '$senha', '$dtNasc', '$rg', '$cpf')";
+		return json_encode($conn->query($sql));
 
-  return json_encode($conn->query($sql));
  } else{
-  echo "Dados invalidos";
-
-        }
+	echo "Dados invalidos";
+  }
 }
 
 function cadastrarExcursao(){

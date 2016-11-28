@@ -3,17 +3,18 @@
 
 
 <div class="container">
-    <form action="submit">
+    <form action="../model/excursoes.php" method="post">
+    <input type="hidden" name="tipo" value="logar" />
        <div class="row">
             <div class="col s12 m12 l12 input-field">
                 <label for="email">Email</label>
-                <input id="email" type="text" class="validate">
+                <input id="email" name="s_email" type="text" class="validate">
             </div>
         </div>
         <div class="row">
             <div class="col s12 m12 l12 input-field">
                 <label for="password">Password</label>
-                <input id="password" type="password" class="validate">
+                <input id="password" name="s_senha" type="password" class="validate">
             </div>
         </div>
         <div class="row">
