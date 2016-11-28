@@ -1,4 +1,7 @@
-<?php define ('ROOT', $_SERVER['HTTP_HOST'].'/letsgo'); ?>
+<?php
+define ('ROOT', $_SERVER['HTTP_HOST'].'/letsgo');
+include ('../connection.php');
+?>
 <!DOCTYPE html>
 <html>
 	<head>

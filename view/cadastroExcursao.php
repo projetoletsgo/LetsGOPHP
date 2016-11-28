@@ -3,7 +3,7 @@
 <h1>Cadastrar Excursão</h1>
     <div class="container">
         <div class="row">
-            <form class="col s12 m8 offset-m2">
+            <form class="col s12 m8 offset-m2" action="teste.php" method="post">
 
                 <div class="row col s12"></div>
 
@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="row input-field col s12">
-                    <input id="local" type="text" class="validate">
+                    <input id="local" type="text" name="local" class="validate">
                     <label for="local">Nome do Local/Evento</label>
                 </div>
 
@@ -66,9 +66,10 @@
                 <div class="row col s12"></div>
 
                 <div class="row col s12">
-                    <div class="col s12 m3">
-                        <a class="waves-effect waves-light btn green" href="principal.html">Criar</a>
-                    </div>
+                    <button class="btn waves-effect waves-light" type="submit" name="action">
+             Entrar
+            <i class="material-icons right">send</i>
+        </button>
 
                     <div class="row col s12 hide-on-med-and-up"></div>
 
