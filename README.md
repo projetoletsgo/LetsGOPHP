@@ -1,9 +1,6 @@
 # LetsGOPHP
 Repositório criado para o desenvolvimento do projeto da disciplina Laboratório de Engenharia de Software do curso Análise e Desenvolvimento de Sistemas da Fatec Taquaritinga
 
-## Install Composer
-https://getcomposer.org/Composer-Setup.exe
-
 ## Create the MySQL Database and Mock
 ```
 CREATE TABLE TB_CIDADE(
